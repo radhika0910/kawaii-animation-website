@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GIF Viewer</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+ 
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: rgb(250, 219, 238);
+      flex-direction: column;
+    }
+    .rectangle {
+      width: auto;
+      max-width: 65%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 7px solid white;
+      border-radius: 20px;
+      background-color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+      margin-bottom: 20px;
+    }
+    .inner-border {
+      border: 7px solid pink;
+      border-radius: 20px;
+      padding: 20px;
+      font-family: 'Dancing Script', cursive;
+    }
+    h2 {
+      font-size: 20px;
+      color: rgb(126, 124, 124);
+      margin: 7px;
+      margin-left: 10px;
+      margin-right: 10px;
+      font-family: 'Dancing Script', cursive; 
+    }
+    img {
+      max-width: 100%;
+      max-height: 70vh;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      font-family: 'Dancing Script', cursive; 
+      background-color: rgb(242, 153, 153); /* Change button background color to red */
+      color: white; /* Change button text color to white */
+      font-weight: bold; /* Make button text bold */
+      border: none; /* Remove default button border */
+      border-radius: 5px; /* Add border radius for a rounded look */
+    }
+
+    button.yes-no-button {
+        padding: 10px 20px;
+        margin-top: 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #4CAF50; /* Green background */
+        color: white; /* White text */
+        border: none;
+        display: inline-block;
+        border-radius: 5px;
+        margin-right: 5px; /* Add some space between the buttons */
+      }
+
+    @media screen and (max-width: 768px) {
+      img {
+        max-height: 50vh;
+      }
+      .rectangle {
+        width: 90%;
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+    <div class="rectangle">
+      <div class="inner-border">
+        <h2 id="displayText">Hey!! How you doin !!?? <br> you havent being texting or meeting me recently , huuunn ???</h2>
+      </div>
+    </div>
+    <img id="gif" src="./assets/sad-thinking.gif" alt="GIF">
+    <button id="nextButton" onclick="nextGIF()">Next</button>
+    <button id="yesButton" class="yes-no-button" style="display: none;" onclick="yesButton()">Yes</button>
+    <button id="noButton" class="yes-no-button" style="display: none;" onclick="nextGIF()">No</button>
+
+  
+    <script>
+      const gifData = [
+        { src: "./assets/looking-at-phone.gif", text: "since few days there wasn't any notification on my phone from you !!! " },
+        { src: "./assets/looking-at-phone.gif", text: "since few days there weren't any notifications on my phone from your end !!! " },
+        { src: "./assets/angry.gif", text: "I was angry with you!! I still am...... you don't seem to understand me sometimes ...." },
+        { src: "./assets/waiting.gif", text: "I was waiting for you to initiate apology the whole time ....my whole point of making a big fuzz that day was you don't listen to everything I say u just hear them .. because of which u irritate me alot cause if u have been listening then u would have know what i wanted ... what's done is done" },
+        { src: "./assets/crying.gif", text: "But that doesn't mean you would act like I don't exist this shit really hurts I mean we both where worng ... I want to sort everything out but u rn't talking to me. " },
+        // { src: "./assets/sad-thinking.gif", text: "Text for Third GIF" },
+        { src: "./assets/thinking.gif", text: "Are you still angry ??? Do you want to sort everything :< !!! " },
+        { src: "./assets/happy-Dance.gif", text: "Hehehehe !!! Then text me fast and say that you r sorry and let's get back to normal as 'I MISS YOU :< !! '" }
+      ];
+  
+      let currentGifIndex = 0;
+      const gifElement = document.getElementById("gif");
+      const displayTextElement = document.getElementById("displayText");
+      const nextButton = document.getElementById("nextButton");
+      const rectangleElement = document.querySelector(".rectangle");
+  
+      function nextGIF() {
+        currentGifIndex = (currentGifIndex + 1) % gifData.length;
+        gifElement.src = gifData[currentGifIndex].src;
+        displayTextElement.innerText = gifData[currentGifIndex].text;
+  
+        // Check if it's the second last GIF
+        if (currentGifIndex === gifData.length - 2) {
+          nextButton.style.display = "none"; // Hide the "Next" button
+          yesButton.style.display = "inline"; // Show the "Yes" button
+          noButton.style.display = "inline"; // Show the "No" button
+        } else if (currentGifIndex === gifData.length - 1) {
+          nextButton.style.display = "none"; // Show the "Next" button
+          yesButton.style.display = "none"; // Hide the "Yes" button
+          noButton.style.display = "none"; // Hide the "No" button
+        } else {
+            nextButton.style.display = "inline"; // Show the "Next" button
+            yesButton.style.display = "none"; // Hide the "Yes" button
+            noButton.style.display = "none"; // Hide the "No" button
+          }
+      }
+
+      
+      function moveButtonAwayFromMouse(event) {
+        const yesButton = document.getElementById("yesButton");
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+
+        const buttonRect = yesButton.getBoundingClientRect();
+        const buttonX = buttonRect.x + buttonRect.width / 2;
+        const buttonY = buttonRect.y + buttonRect.height / 2;
+
+        const distance = Math.sqrt(Math.pow(buttonX - mouseX, 2) + Math.pow(buttonY - mouseY, 2));
+
+        if (distance < 50) {
+          const angle = Math.atan2(buttonY - mouseY, buttonX - mouseX);
+          const newX = mouseX + 50 * Math.cos(angle);
+          const newY = mouseY - 50 * Math.sin(angle);
+
+          yesButton.style.position = "fixed";
+          yesButton.style.left = `${newX}px`;
+          yesButton.style.top = `${newY}px`;
+        }
+      }
+
+      document.addEventListener("mousemove", moveButtonAwayFromMouse);
+      
+     </script>
+  </body>
+</html>
